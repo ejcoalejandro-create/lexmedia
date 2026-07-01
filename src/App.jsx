@@ -81,7 +81,11 @@ async function analyzeImageWithClaude(base64, mediaType) {
 }
 
 async function fetchArticleContent(url) {
-  const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+  const res = await fetch("/api/fetch-url", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url }),
+  });
   const data = await res.json();
   const html = data.contents || "";
   return html
@@ -100,14 +104,13 @@ async function getYoutubeTitle(videoId) {
 }
 
 async function generateImageFal(prompt) {
-  if (!CONFIG.FAL_API_KEY) return null;
-  const res = await fetch("https://fal.run/fal-ai/fast-sdxl", {
+  const res = await fetch("/api/generate-image", {
     method: "POST",
-    headers: { "Authorization": `Key ${CONFIG.FAL_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt, num_inference_steps: 25, image_size: "square_hd" }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt }),
   });
   const data = await res.json();
-  return data.images?.[0]?.url || null;
+  return data.imageUrl || null;
 }
 
 // ─────────────────────────────────────────────
