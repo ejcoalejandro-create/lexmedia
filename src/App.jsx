@@ -337,14 +337,14 @@ export default function App() {
           </div>
         </div>
         <div style={S.headerRight}>
-          <span style={S.pill}>IA · Claude Sonnet</span>
-          <span style={S.pill}>fal.ai SDXL</span>
+          <span style={S.pill}>IA · Abogados de Salud Córdoba</span>
+          <span style={S.pill}>@abogadosalud.cordoba</span>
         </div>
       </header>
 
       <div style={{ background: "#fff", borderBottom: "1px solid #e0e0e0", padding: "20px 48px", display: "flex", alignItems: "baseline", gap: 24 }}>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 400, fontFamily: "Georgia,serif", color: "#111", letterSpacing: -0.5 }}>Publicador Inteligente</h1>
-        <span style={{ fontSize: 12, color: "#aaa", fontFamily: "Arial,sans-serif", letterSpacing: 1 }}>URL o imagen → resumen → imagen → publicación en redes</span>
+        <span style={{ fontSize: 12, color: "#aaa", fontFamily: "Arial,sans-serif", letterSpacing: 1 }}>Gestor de redes sociales</span>
       </div>
 
       <main style={S.main}>
@@ -481,7 +481,7 @@ export default function App() {
 
       <footer style={{ borderTop: "1px solid #e0e0e0", padding: "20px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#fff" }}>
         <span style={{ fontSize: 10, color: "#bbb", fontFamily: "Arial,sans-serif", letterSpacing: 2, textTransform: "uppercase" }}>LexMedia · Gestión de contenido jurídico con IA</span>
-        <span style={{ fontSize: 10, color: "#ddd", fontFamily: "Arial,sans-serif" }}>Powered by Claude · fal.ai</span>
+        <span style={{ fontSize: 10, color: "#ddd", fontFamily: "Arial,sans-serif" }}></span>
       </footer>
     </div>
   );
