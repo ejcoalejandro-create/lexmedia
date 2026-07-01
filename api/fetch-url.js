@@ -1,24 +1,34 @@
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
   const { url } = req.body;
+
+  // Intentar con proxy 1
   try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 8000);
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-        "Accept": "text/html,application/xhtml+xml",
-        "Accept-Language": "es-ES,es;q=0.9",
-      },
-      signal: controller.signal,
+    const r1 = await fetch(`https://r.jina.ai/${url}`, {
+      headers: { "Accept": "text/plain" },
     });
-    clearTimeout(timeout);
-    const text = await response.text();
-    console.log("fetch-url bytes:", text.length);
-    res.status(200).json({ contents: text });
-  } catch (e) {
-    console.error("fetch-url error:", e.message);
-    // Si falla devuelve vacío para que Claude use solo la URL
-    res.status(200).json({ contents: "", error: e.message });
-  }
+    if (r1.ok) {
+      const text = await r1.text();
+      if (text.length > 500) {
+        console.log("fetch-url jina bytes:", text.length);
+        return res.status(200).json({ contents: text.slice(0, 8000) });
+      }
+    }
+  } catch(e) { console.log("jina failed:", e.message); }
+
+  // Intentar con proxy 2
+  try {
+    const r2 = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+    if (r2.ok) {
+      const data = await r2.json();
+      if (data.contents?.length > 500) {
+        console.log("fetch-url allorigins bytes:", data.contents.length);
+        return res.status(200).json({ contents: data.contents.slice(0, 8000) });
+      }
+    }
+  } catch(e) { console.log("allorigins failed:", e.message); }
+
+  // Si todo falla, devuelve vacío
+  console.log("fetch-url: all proxies failed");
+  res.status(200).json({ contents: "" });
 }
