@@ -8,13 +8,18 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Authorization": `Key ${falKey}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "application/json",
       },
       body: JSON.stringify({ prompt, num_inference_steps: 25, image_size: "square_hd" })
     });
-    const data = await response.json();
-    res.status(200).json({ imageUrl: data.images?.[0]?.url || null });
+    const text = await response.text();
+    console.log("fal.ai response:", text);
+    const data = JSON.parse(text);
+    const imageUrl = data.images?.[0]?.url || data.image?.url || null;
+    res.status(200).json({ imageUrl });
   } catch (e) {
-    res.status(500).json({ imageUrl: null });
+    console.error("fal.ai error:", e.message);
+    res.status(200).json({ imageUrl: null, error: e.message });
   }
 }
