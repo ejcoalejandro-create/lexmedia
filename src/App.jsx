@@ -34,7 +34,7 @@ function toBase64(file) {
 }
 
 async function callClaude(system, userContent) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const res = await fetch("/api/claude", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -51,7 +51,7 @@ async function callClaude(system, userContent) {
 }
 
 async function analyzeImageWithClaude(base64, mediaType) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
+  const res = await fetch("/api/claude", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
